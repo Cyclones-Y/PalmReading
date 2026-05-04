@@ -74,9 +74,9 @@ async function submit() {
         </p>
 
         <div class="home-proof" aria-label="解读内容">
-          <span>看见性格底色</span>
-          <span>梳理行动节奏</span>
-          <span>生成中文报告</span>
+          <span>掌纹 AI 精读</span>
+          <span>性格优势洞察</span>
+          <span>专属报告即刻生成</span>
         </div>
 
         <div class="hero-card" aria-hidden="true">
