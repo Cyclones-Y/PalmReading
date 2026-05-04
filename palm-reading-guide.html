@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>你的手相解读指南</title>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --ink: #1f1d1a;
+      --muted: #706a60;
+      --line: #ddd8cf;
+      --soft: #f3f0e9;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(120deg, rgba(31, 29, 26, .035), transparent 42%),
+        var(--paper);
+      font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", SimSun, serif;
+      line-height: 1.78;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 28px auto;
+      padding: clamp(24px, 4vw, 44px);
+      background: rgba(251, 250, 247, .95);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 50px rgba(31, 29, 26, .07);
+    }
+
+    .top {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr);
+      gap: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: clamp(22px, 3vw, 34px);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 600px;
+      font-size: clamp(34px, 6vw, 66px);
+      font-weight: 400;
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .rule {
+      width: 54px;
+      height: 1px;
+      margin: 22px 0;
+      background: var(--ink);
+      opacity: .55;
+    }
+
+    .kicker {
+      margin-top: 18px;
+      font-size: 13px;
+      letter-spacing: .42em;
+      color: var(--muted);
+    }
+
+    .intro {
+      max-width: 630px;
+      margin-top: 28px;
+      color: #39352f;
+      font-size: 16px;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .meta-item {
+      min-height: 82px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .meta-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .18em;
+    }
+
+    .meta-item strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .overview {
+      border-left: 1px solid var(--line);
+      padding-left: 28px;
+    }
+
+    .overview p {
+      margin-top: 18px;
+      color: #39352f;
+    }
+
+    .traits {
+      margin-top: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .trait {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .icon {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .trait b {
+      display: block;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .trait span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .main-grid {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: minmax(320px, .95fr) minmax(0, 1.05fr);
+      gap: 24px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: clamp(20px, 3vw, 30px);
+      background: rgba(251, 250, 247, .75);
+    }
+
+    .palm-figure {
+      display: block;
+      width: min(100%, 430px);
+      margin: 22px auto 12px;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .mark {
+      display: inline-grid;
+      place-items: center;
+      width: 19px;
+      height: 19px;
+      margin-right: 5px;
+      border-radius: 50%;
+      color: var(--paper);
+      background: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 12px;
+      vertical-align: 1px;
+    }
+
+    .line-list {
+      display: grid;
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .line-card {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .line-card:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .line-card p {
+      color: #403b34;
+      font-size: 15px;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .mini {
+      min-height: 252px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .mini .symbol {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .mini h2 {
+      margin-top: 18px;
+      font-size: 14px;
+    }
+
+    .mini p,
+    .mini li {
+      color: #403b34;
+      font-size: 15px;
+    }
+
+    ul {
+      margin: 16px 0 0;
+      padding-left: 18px;
+    }
+
+    .closing {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 24px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .closing h2 {
+      font-size: 14px;
+    }
+
+    .closing p {
+      color: #403b34;
+      font-size: 16px;
+    }
+
+    .note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    svg text {
+      dominant-baseline: middle;
+    }
+
+    @media (max-width: 860px) {
+      .top,
+      .main-grid,
+      .bottom-grid,
+      .closing {
+        grid-template-columns: 1fr;
+      }
+
+      .overview {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+        padding-left: 0;
+        padding-top: 24px;
+      }
+
+      .meta {
+        grid-template-columns: 1fr;
+      }
+
+      .legend {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+
+      body {
+        background: var(--paper);
+      }
+
+      .page {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="top" aria-labelledby="guide-title">
+      <div>
+        <h1 id="guide-title">你的手相<br />解读指南</h1>
+        <div class="rule"></div>
+        <div class="kicker">掌纹 · 性格 · 路径</div>
+        <p class="intro">
+          根据照片判断，这是一只左手掌心。传统手相里，左手更偏向内在天赋、原始性格与潜在倾向；若你惯用左手，可把它更多理解为现实中的行动方式。以下解读以主要掌纹为核心，取照片中清晰、稳定可见的线条，不对模糊细纹做过度延伸。
+        </p>
+        <div class="meta">
+          <div class="meta-item">
+            <span>手型</span>
+            <strong>长掌细指</strong>
+          </div>
+          <div class="meta-item">
+            <span>元素倾向</span>
+            <strong>风型带水感</strong>
+          </div>
+          <div class="meta-item">
+            <span>整体类型</span>
+            <strong>敏锐的理想实践者</strong>
+          </div>
+        </div>
+      </div>
+
+      <aside class="overview" aria-labelledby="overview-title">
+        <h2 id="overview-title">掌相总览</h2>
+        <p>
+          你的掌纹整体细、长、分支较多，说明不是粗线条的冲动型，而是观察敏锐、思考细致、容易把感受和判断都放在心里慢慢消化的人。掌心肉感均匀，拇指张角较开，代表行动上并不封闭，具备独立选择与自我推进的能力。
+        </p>
+        <div class="traits">
+          <div class="trait">
+            <div class="icon">Ⅰ</div>
+            <div><b>理性中有直觉</b><span>逻辑感不弱，但真正做决定时常参考内心感受。</span></div>
+          </div>
+          <div class="trait">
+            <div class="icon">Ⅱ</div>
+            <div><b>慢热而重承诺</b><span>情感表达含蓄，关系稳定后会投入得很认真。</span></div>
+          </div>
+          <div class="trait">
+            <div class="icon">Ⅲ</div>
+            <div><b>适合长期积累</b><span>不是靠一时爆发取胜，更适合用作品、信用和经验沉淀优势。</span></div>
+          </div>
+          <div class="trait">
+            <div class="icon">Ⅳ</div>
+            <div><b>敏感但有韧性</b><span>容易被环境与人际影响，却能在压力后重新整理自己。</span></div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="main-grid">
+      <article class="panel" aria-labelledby="lines-title">
+        <h2 id="lines-title">主要掌纹线稿</h2>
+        <svg class="palm-figure" viewBox="0 0 420 520" role="img" aria-labelledby="svg-title svg-desc">
+          <title id="svg-title">左手主要掌纹小插图</title>
+          <desc id="svg-desc">黑白细线绘制的左手轮廓，并标出感情线、智慧线、生命线和事业线。</desc>
+          <rect width="420" height="520" fill="#fbfaf7"/>
+          <g fill="none" stroke="#1f1d1a" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M86 488 C81 435 57 391 31 342 C3 291 -16 221 9 198 C27 181 51 196 50 230 C49 253 69 257 79 238 C88 221 84 139 87 103 C90 72 113 62 129 80 C143 96 137 209 142 233 C145 249 166 249 168 231 C171 204 166 87 177 57 C185 35 211 32 223 54 C236 78 224 207 230 234 C234 251 256 251 259 233 C263 206 263 126 274 104 C284 84 309 89 316 113 C323 139 305 220 310 247 C315 275 350 246 378 236 C404 226 428 248 418 277 C408 306 361 319 327 339 C290 361 264 403 258 488"/>
+            <path d="M87 488 C106 498 163 500 188 488" opacity=".72"/>
+            <path d="M66 276 C123 250 190 243 277 252" stroke-width="1.7"/>
+            <path d="M292 286 C238 291 172 320 95 360" stroke-width="1.8"/>
+            <path d="M292 284 C266 315 252 357 250 427" stroke-width="1.8"/>
+            <path d="M207 438 C207 390 204 340 213 296 C218 270 223 246 219 222" stroke-width="1.3" opacity=".78"/>
+            <path d="M143 300 C122 298 101 307 83 324" stroke-width=".75" opacity=".35"/>
+            <path d="M245 286 C263 303 276 324 286 350" stroke-width=".75" opacity=".32"/>
+            <path d="M167 250 C179 269 192 282 207 294" stroke-width=".75" opacity=".32"/>
+            <path d="M196 363 C209 381 219 402 224 426" stroke-width=".75" opacity=".28"/>
+          </g>
+          <g font-family="Georgia, 'Times New Roman', serif" font-size="13" text-anchor="middle">
+            <circle cx="279" cy="253" r="13" fill="#1f1d1a"/>
+            <text x="279" y="258" fill="#fbfaf7">1</text>
+            <circle cx="105" cy="359" r="13" fill="#1f1d1a"/>
+            <text x="105" y="364" fill="#fbfaf7">2</text>
+            <circle cx="252" cy="428" r="13" fill="#1f1d1a"/>
+            <text x="252" y="433" fill="#fbfaf7">3</text>
+            <circle cx="210" cy="438" r="13" fill="#1f1d1a"/>
+            <text x="210" y="443" fill="#fbfaf7">4</text>
+          </g>
+        </svg>
+        <div class="legend">
+          <span><i class="mark">1</i>感情线</span>
+          <span><i class="mark">2</i>智慧线</span>
+          <span><i class="mark">3</i>生命线</span>
+          <span><i class="mark">4</i>事业线</span>
+        </div>
+      </article>
+
+      <article class="panel" aria-labelledby="major-title">
+        <h2 id="major-title">四条主线解读</h2>
+        <div class="line-list">
+          <section class="line-card">
+            <span class="mark">1</span>
+            <div>
+              <h3>感情线</h3>
+              <p>上方横纹较细，整体略弯，末端趋向食指与中指之间。它代表情感上既重视真实连接，也保留理性边界。你不是轻易被热闹打动的人，更在意长期的信任、稳定的回应和彼此价值观是否一致。</p>
+            </div>
+          </section>
+          <section class="line-card">
+            <span class="mark">2</span>
+            <div>
+              <h3>智慧线</h3>
+              <p>智慧线较长，并向掌心下方斜行，说明思考方式兼具分析力和想象力。你适合处理需要理解人、信息、结构与细节的事情；缺点是容易想得深、想得多，压力大时会反复推演。</p>
+            </div>
+          </section>
+          <section class="line-card">
+            <span class="mark">3</span>
+            <div>
+              <h3>生命线</h3>
+              <p>生命线弧度较开，包围拇指根部，主线连续但深浅有变化。传统手相会把它理解为恢复力与生活韧性不错，但精力不是无限外放型，需要靠节奏管理来保持状态。</p>
+            </div>
+          </section>
+          <section class="line-card">
+            <span class="mark">4</span>
+            <div>
+              <h3>事业线</h3>
+              <p>掌心中轴可见一条偏细的上升线，中段更明显。它不像强烈外推的事业线，而是“越走越清楚”的形态：人生方向往往通过尝试、选择和自我修正逐步稳定，适合走长期主义路线。</p>
+            </div>
+          </section>
+        </div>
+      </article>
+    </section>
+
+    <section class="bottom-grid" aria-label="事业、情感、健康解读">
+      <article class="mini">
+        <div class="symbol">✦</div>
+        <h2>事业路径</h2>
+        <p>
+          你的事业能量偏“内在驱动型”。适合需要洞察、表达、规划、审美、研究、沟通或项目推进的工作，不太适合长期处在机械重复、缺少判断空间的位置。
+        </p>
+        <ul>
+          <li>优势：学习快、感知细、能把复杂信息整理成体系。</li>
+          <li>提醒：目标要阶段化，否则容易在选择太多时分散。</li>
+          <li>走势：越到后期越靠专业信用和稳定作品打开局面。</li>
+        </ul>
+      </article>
+
+      <article class="mini">
+        <div class="symbol">♡</div>
+        <h2>情感关系</h2>
+        <p>
+          感情线细而不断，说明你重视关系质量，不喜欢表面热烈但缺少稳定感的互动。你在亲密关系中慢热、谨慎、观察期较长，一旦确认值得，会比较认真负责。
+        </p>
+        <ul>
+          <li>适合：成熟、坦诚、情绪稳定、愿意沟通的人。</li>
+          <li>课题：把需求说清楚，少用沉默测试对方。</li>
+          <li>关键词：安全感、信任、精神交流、共同成长。</li>
+        </ul>
+      </article>
+
+      <article class="mini">
+        <div class="symbol">☉</div>
+        <h2>健康状态</h2>
+        <p>
+          从传统手相角度看，生命线完整，基础恢复力不弱；掌内细纹较多，则提示你容易被思虑、睡眠节奏和外部压力消耗。这里不是医学诊断，只能作为生活习惯提醒。
+        </p>
+        <ul>
+          <li>注意：规律睡眠、肩颈放松、减少长期熬夜。</li>
+          <li>建议：用运动和日程边界释放脑力负荷。</li>
+          <li>若有持续不适，应以正规医疗检查为准。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="closing">
+      <h2>你的主导能量</h2>
+      <p>
+        你的掌纹给人的核心印象是：温和、敏锐、能沉淀，也有自我选择的骨架。你适合在安静而明确的方向里持续发力，把细腻的观察变成真实可见的成果。
+      </p>
+    </section>
+    <p class="note">手相解读属于传统民俗与娱乐参考，不用于替代现实决策、医疗诊断或专业咨询。</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" role="img" aria-labelledby="title desc">
+  <title id="title">左手掌纹黑白轮廓线稿</title>
+  <desc id="desc">根据照片抽象绘制的左手掌形与感情线、智慧线、生命线、事业线。</desc>
+  <rect width="420" height="520" fill="#fbfaf7"/>
+  <g fill="none" stroke="#1f1d1a" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M156 488 C151 435 127 391 101 342 C73 291 54 221 79 198 C97 181 121 196 120 230 C119 253 139 257 149 238 C158 221 154 139 157 103 C160 72 183 62 199 80 C213 96 207 209 212 233 C215 249 236 249 238 231 C241 204 236 87 247 57 C255 35 281 32 293 54 C306 78 294 207 300 234 C304 251 326 251 329 233 C333 206 333 126 344 104 C354 84 379 89 386 113 C393 139 375 220 380 247 C385 275 420 246 448 236 C474 226 498 248 488 277 C478 306 431 319 397 339 C360 361 334 403 328 488" transform="translate(-70 0)"/>
+    <path d="M157 488 C176 498 233 500 258 488" opacity=".72"/>
+
+    <path d="M66 276 C123 250 190 243 277 252" stroke-width="1.7"/>
+    <path d="M292 286 C238 291 172 320 95 360" stroke-width="1.8"/>
+    <path d="M292 284 C266 315 252 357 250 427" stroke-width="1.8"/>
+    <path d="M207 438 C207 390 204 340 213 296 C218 270 223 246 219 222" stroke-width="1.3" opacity=".78"/>
+
+    <path d="M143 300 C122 298 101 307 83 324" stroke-width=".75" opacity=".35"/>
+    <path d="M245 286 C263 303 276 324 286 350" stroke-width=".75" opacity=".32"/>
+    <path d="M167 250 C179 269 192 282 207 294" stroke-width=".75" opacity=".32"/>
+    <path d="M196 363 C209 381 219 402 224 426" stroke-width=".75" opacity=".28"/>
+  </g>
+
+  <g font-family="Georgia, 'Times New Roman', serif" font-size="13" text-anchor="middle">
+    <circle cx="279" cy="253" r="13" fill="#1f1d1a"/>
+    <text x="279" y="258" fill="#fbfaf7">1</text>
+    <circle cx="105" cy="359" r="13" fill="#1f1d1a"/>
+    <text x="105" y="364" fill="#fbfaf7">2</text>
+    <circle cx="252" cy="428" r="13" fill="#1f1d1a"/>
+    <text x="252" y="433" fill="#fbfaf7">3</text>
+    <circle cx="210" cy="438" r="13" fill="#1f1d1a"/>
+    <text x="210" y="443" fill="#fbfaf7">4</text>
+  </g>
+</svg>

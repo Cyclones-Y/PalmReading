@@ -1,0 +1,21 @@
+[project]
+name = "palm-reading-backend"
+version = "0.1.0"
+description = "FastAPI backend for the palm reading ToC Web MVP."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.115.4",
+    "httpx==0.27.2",
+    "pydantic==2.9.2",
+    "pydantic-settings==2.6.1",
+    "python-multipart==0.0.12",
+    "uvicorn[standard]==0.32.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==9.0.2",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
