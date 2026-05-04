@@ -9,6 +9,7 @@ const reading = ref(null)
 const isLoading = ref(true)
 const errorMessage = ref('')
 const progressTick = ref(0)
+const uploadImageReady = ref(true)
 let pollTimer = null
 let progressTimer = null
 
@@ -60,6 +61,10 @@ const activeStepIndex = computed(() => {
 })
 
 const currentStep = computed(() => analysisSteps[activeStepIndex.value])
+const uploadImageUrl = computed(() => {
+  const readingId = route.params.readingId
+  return readingId ? `/api/v1/palm-readings/${readingId}/image` : ''
+})
 
 onMounted(() => {
   startProgressLoop()
@@ -134,7 +139,14 @@ function stepNumber(index) {
 
       <div class="analysis-visual" aria-hidden="true">
         <div class="scan-frame">
-          <span class="scan-print"></span>
+          <img
+            v-if="uploadImageUrl && uploadImageReady"
+            class="scan-photo"
+            :src="uploadImageUrl"
+            alt=""
+            @error="uploadImageReady = false"
+          />
+          <span v-else class="scan-print"></span>
           <span class="scan-line"></span>
         </div>
       </div>

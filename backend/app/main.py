@@ -5,6 +5,7 @@ from functools import lru_cache
 
 from fastapi import BackgroundTasks, Depends, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
 
 from app.config import Settings, get_settings
@@ -21,6 +22,12 @@ ALLOWED_CONTENT_TYPES = {
     "image/webp",
 }
 ALLOWED_HAND_SIDES = {"左手", "右手"}
+IMAGE_MEDIA_TYPES = {
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".webp": "image/webp",
+}
 
 
 @lru_cache
@@ -98,6 +105,23 @@ def create_app() -> FastAPI:
         if storage.is_expired(record):
             raise HTTPException(status_code=410, detail="报告已过期")
         return _to_reading_response(record)
+
+    @app.get("/api/v1/palm-readings/{reading_id}/image")
+    async def get_palm_reading_image(
+        reading_id: str,
+        storage: LocalStorage = Depends(get_storage),
+    ) -> FileResponse:
+        record = storage.get_record(reading_id)
+        if record is None or record.imageObjectKey is None:
+            raise HTTPException(status_code=404, detail="上传图片不存在")
+        if storage.is_expired(record):
+            raise HTTPException(status_code=410, detail="报告已过期")
+
+        image_path = storage.image_path(record.imageObjectKey)
+        if not image_path.is_file():
+            raise HTTPException(status_code=404, detail="上传图片不存在")
+        media_type = IMAGE_MEDIA_TYPES.get(image_path.suffix.lower(), "application/octet-stream")
+        return FileResponse(image_path, media_type=media_type)
 
     @app.get("/api/v1/public-readings/{share_token}", response_model=PublicReadingResponse)
     async def get_public_reading(

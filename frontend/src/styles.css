@@ -530,6 +530,17 @@ button:disabled {
   opacity: .9;
 }
 
+.scan-photo {
+  position: absolute;
+  inset: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  border: 1px solid rgba(31, 29, 26, .08);
+  border-radius: 6px;
+  object-fit: cover;
+  filter: grayscale(.15) contrast(1.04);
+}
+
 .scan-line {
   position: absolute;
   left: 14px;

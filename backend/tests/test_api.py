@@ -39,6 +39,24 @@ def test_upload_creates_reading_and_result(tmp_path: Path) -> None:
     assert data["result"]["aspects"][2]["key"] == "health"
 
 
+def test_get_upload_image(tmp_path: Path) -> None:
+    client, _ = make_client(tmp_path)
+    image_bytes = b"fake-image"
+
+    upload = client.post(
+        "/api/v1/palm-readings",
+        data={"handSide": "左手"},
+        files={"image": ("palm.jpg", image_bytes, "image/jpeg")},
+    )
+    reading_id = upload.json()["readingId"]
+
+    response = client.get(f"/api/v1/palm-readings/{reading_id}/image")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("image/jpeg")
+    assert response.content == image_bytes
+
+
 def test_rejects_non_image(tmp_path: Path) -> None:
     client, _ = make_client(tmp_path)
 
@@ -70,6 +88,9 @@ def test_public_link_expires(tmp_path: Path) -> None:
     response = client.get(f"/api/v1/public-readings/{share_token}")
     assert response.status_code == 410
     assert response.json()["detail"] == "报告已过期"
+
+    image_response = client.get(f"/api/v1/palm-readings/{reading_id}/image")
+    assert image_response.status_code == 410
 
 
 def test_rejects_invalid_hand_side(tmp_path: Path) -> None:
