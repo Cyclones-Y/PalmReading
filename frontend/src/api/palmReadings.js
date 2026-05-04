@@ -2,9 +2,10 @@ const JSON_HEADERS = {
   Accept: 'application/json'
 }
 
-export async function createPalmReading(file) {
+export async function createPalmReading(file, handSide) {
   const body = new FormData()
   body.append('image', file)
+  body.append('handSide', handSide)
   const response = await fetch('/api/v1/palm-readings', {
     method: 'POST',
     body,

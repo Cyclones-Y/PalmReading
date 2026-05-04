@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from functools import lru_cache
 
-from fastapi import BackgroundTasks, Depends, FastAPI, File, HTTPException, UploadFile
+from fastapi import BackgroundTasks, Depends, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -20,6 +20,7 @@ ALLOWED_CONTENT_TYPES = {
     "image/png",
     "image/webp",
 }
+ALLOWED_HAND_SIDES = {"左手", "右手"}
 
 
 @lru_cache
@@ -54,6 +55,7 @@ def create_app() -> FastAPI:
     async def create_palm_reading(
         background_tasks: BackgroundTasks,
         image: UploadFile = File(...),
+        handSide: str = Form(...),
         settings: Settings = Depends(get_settings),
         storage: LocalStorage = Depends(get_storage),
         analysis_service: PalmAnalysisService = Depends(get_analysis_service),
@@ -62,6 +64,8 @@ def create_app() -> FastAPI:
             raise HTTPException(status_code=503, detail="AI 分析服务暂时关闭")
         if image.content_type not in ALLOWED_CONTENT_TYPES:
             raise HTTPException(status_code=400, detail="仅支持 JPG、PNG 或 WEBP 图片")
+        if handSide not in ALLOWED_HAND_SIDES:
+            raise HTTPException(status_code=400, detail="请选择左手或右手")
 
         content = await _read_upload(image, settings.max_upload_bytes)
         record = storage.new_record()
@@ -72,6 +76,7 @@ def create_app() -> FastAPI:
         background_tasks.add_task(
             _run_analysis_task,
             record.readingId,
+            handSide,
             storage,
             analysis_service,
         )
@@ -127,6 +132,7 @@ async def _read_upload(image: UploadFile, max_upload_bytes: int) -> bytes:
 
 async def _run_analysis_task(
     reading_id: str,
+    hand_side: str,
     storage: LocalStorage,
     analysis_service: PalmAnalysisService,
 ) -> None:
@@ -136,6 +142,7 @@ async def _run_analysis_task(
     try:
         image_path = storage.image_path(record.imageObjectKey)
         result = await analysis_service.analyze_with_retry(image_path)
+        result.handInfo.handSide = hand_side
         storage.mark_succeeded(reading_id, result)
         logger.info("palm reading task succeeded reading_id=%s", reading_id)
     except Exception as exc:

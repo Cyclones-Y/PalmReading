@@ -10,8 +10,10 @@ const selectedFile = ref(null)
 const previewUrl = ref('')
 const isUploading = ref(false)
 const errorMessage = ref('')
+const selectedHandSide = ref('右手')
 
 const selectedFileName = computed(() => selectedFile.value?.name || '')
+const handSideOptions = ['左手', '右手']
 
 onBeforeUnmount(() => {
   if (previewUrl.value) {
@@ -48,7 +50,7 @@ async function submit() {
   isUploading.value = true
   errorMessage.value = ''
   try {
-    const response = await createPalmReading(selectedFile.value)
+    const response = await createPalmReading(selectedFile.value, selectedHandSide.value)
     router.push({
       name: 'reading',
       params: { readingId: response.readingId },
@@ -109,6 +111,23 @@ async function submit() {
 
         <p v-if="selectedFileName" class="file-name">{{ selectedFileName }}</p>
         <p v-else class="upload-hint">支持 JPG / PNG / WEBP，单张图片最大 10MB。无需注册，上传后即可生成。</p>
+
+        <div class="hand-side-field" aria-label="选择上传手别">
+          <span>这张照片是</span>
+          <div class="hand-side-toggle" role="radiogroup" aria-label="手别选择">
+            <button
+              v-for="option in handSideOptions"
+              :key="option"
+              type="button"
+              role="radio"
+              :aria-checked="selectedHandSide === option"
+              :class="{ active: selectedHandSide === option }"
+              @click="selectedHandSide = option"
+            >
+              {{ option }}
+            </button>
+          </div>
+        </div>
 
         <div class="upload-actions">
           <button type="button" class="primary-btn" @click="openCamera">直接拍照</button>
