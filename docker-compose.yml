@@ -11,7 +11,7 @@ services:
       PALM_DATA_DIR: /app/data
       PALM_CORS_ORIGINS: '["https://www.zmintz.com","https://zmintz.com"]'
     ports:
-      - "127.0.0.1:8000:8000"
+      - "8000:8000"
     volumes:
       - palm-reading-data:/app/data
     healthcheck:
