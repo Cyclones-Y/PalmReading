@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import PalmIllustration from './PalmIllustration.vue'
 import { fallbackReading } from '../data/fallbackReading'
 
@@ -14,16 +14,15 @@ const props = defineProps({
   }
 })
 
+const copyState = ref('idle')
+let copyResetTimer = null
+
 const report = computed(() => ({
   ...fallbackReading,
   ...props.result,
   handInfo: {
     ...fallbackReading.handInfo,
     ...(props.result?.handInfo || {})
-  },
-  illustration: {
-    ...fallbackReading.illustration,
-    ...(props.result?.illustration || {})
   }
 }))
 
@@ -38,6 +37,63 @@ const aspects = computed(() => {
   const items = report.value.aspects || []
   return order.map((key) => items.find((item) => item.key === key) || fallbackReading.aspects.find((item) => item.key === key))
 })
+
+const copyButtonText = computed(() => {
+  if (copyState.value === 'copied') {
+    return '已复制'
+  }
+  if (copyState.value === 'failed') {
+    return '复制失败'
+  }
+  return '复制'
+})
+
+onBeforeUnmount(() => {
+  if (copyResetTimer) {
+    window.clearTimeout(copyResetTimer)
+  }
+})
+
+async function copyShareUrl() {
+  if (!props.shareUrl) {
+    return
+  }
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(props.shareUrl)
+    } else if (!copyWithFallback(props.shareUrl)) {
+      throw new Error('copy failed')
+    }
+    setCopyState('copied')
+  } catch {
+    setCopyState(copyWithFallback(props.shareUrl) ? 'copied' : 'failed')
+  }
+}
+
+function setCopyState(state) {
+  copyState.value = state
+  if (copyResetTimer) {
+    window.clearTimeout(copyResetTimer)
+  }
+  copyResetTimer = window.setTimeout(() => {
+    copyState.value = 'idle'
+    copyResetTimer = null
+  }, 1800)
+}
+
+function copyWithFallback(text) {
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.setAttribute('readonly', '')
+  textarea.style.position = 'fixed'
+  textarea.style.top = '-9999px'
+  textarea.style.opacity = '0'
+  document.body.appendChild(textarea)
+  textarea.select()
+  const isCopied = document.execCommand('copy')
+  document.body.removeChild(textarea)
+  return isCopied
+}
 </script>
 
 <template>
@@ -85,13 +141,7 @@ const aspects = computed(() => {
     <section class="report-grid">
       <article class="panel" aria-labelledby="lines-title">
         <h2 id="lines-title">主要掌纹线稿</h2>
-        <PalmIllustration :illustration="report.illustration" />
-        <div class="legend">
-          <span><i class="mark">1</i>感情线</span>
-          <span><i class="mark">2</i>智慧线</span>
-          <span><i class="mark">3</i>生命线</span>
-          <span><i class="mark">4</i>事业线</span>
-        </div>
+        <PalmIllustration :hand-side="report.handInfo.handSide" />
       </article>
 
       <article class="panel" aria-labelledby="major-title">
@@ -126,7 +176,16 @@ const aspects = computed(() => {
 
     <section v-if="shareUrl" class="share-strip" aria-label="分享链接">
       <span>分享链接</span>
-      <input :value="shareUrl" readonly />
+      <input :value="shareUrl" readonly aria-label="可分享的报告链接" />
+      <button
+        type="button"
+        class="share-copy-btn"
+        :class="{ copied: copyState === 'copied', failed: copyState === 'failed' }"
+        :aria-label="copyState === 'copied' ? '分享链接已复制' : '复制分享链接'"
+        @click="copyShareUrl"
+      >
+        {{ copyButtonText }}
+      </button>
     </section>
 
     <p class="note">{{ report.disclaimer }}</p>

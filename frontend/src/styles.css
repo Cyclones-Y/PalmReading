@@ -876,7 +876,7 @@ ul {
 .share-strip {
   margin-top: 24px;
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 100px minmax(0, 1fr) auto;
   gap: 12px;
   align-items: center;
   border: 1px solid var(--line);
@@ -891,10 +891,40 @@ ul {
 
 .share-strip input {
   width: 100%;
+  min-width: 0;
   border: 0;
   background: transparent;
   color: var(--ink);
   outline: none;
+}
+
+.share-copy-btn {
+  min-width: 76px;
+  min-height: 38px;
+  border: 1px solid rgba(31, 29, 26, .7);
+  border-radius: 8px;
+  padding: 0 14px;
+  color: var(--paper);
+  background: var(--ink);
+  font-size: 13px;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+  white-space: nowrap;
+}
+
+.share-copy-btn:hover {
+  transform: translateY(-1px);
+}
+
+.share-copy-btn.copied {
+  border-color: rgba(138, 47, 35, .45);
+  color: var(--seal);
+  background: rgba(251, 250, 247, .72);
+}
+
+.share-copy-btn.failed {
+  border-color: rgba(138, 47, 35, .5);
+  color: var(--paper);
+  background: var(--seal);
 }
 
 .note {
@@ -916,6 +946,10 @@ svg text {
   .closing,
   .share-strip {
     grid-template-columns: 1fr;
+  }
+
+  .share-copy-btn {
+    width: 100%;
   }
 
   .overview {

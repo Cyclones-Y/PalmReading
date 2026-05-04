@@ -14,24 +14,24 @@ let progressTimer = null
 
 const analysisSteps = [
   {
-    title: '接收手掌照片',
-    description: '校验图片格式，并准备进入掌纹识别流程'
+    title: '确认掌心照片',
+    description: '查看画面清晰度，整理可见的掌心细节'
   },
   {
-    title: '识别手型轮廓',
-    description: '定位掌心、手指比例和主要掌区'
+    title: '梳理掌形特征',
+    description: '结合手型比例与掌心区域，形成初步印象'
   },
   {
-    title: '提取主要掌纹',
-    description: '整理感情线、智慧线、生命线和事业线'
+    title: '阅读主要纹路',
+    description: '依次查看感情线、智慧线、生命线与事业线'
   },
   {
-    title: '生成三项解读',
-    description: '围绕事业、情感与健康生成中文分析'
+    title: '整理三项主题',
+    description: '围绕事业方向、情感关系与日常状态生成解读'
   },
   {
-    title: '排版报告页面',
-    description: '套用极简复古模板，准备展示完整指南'
+    title: '装订专属报告',
+    description: '把解读内容排成完整页面，稍后即可查看'
   }
 ]
 
@@ -128,9 +128,9 @@ function stepNumber(index) {
 
   <section v-else-if="!reading || reading.status === 'processing'" class="state-page">
     <div class="state-card analysis-card" aria-live="polite">
-      <p class="eyebrow">ANALYSING PALM LINES</p>
-      <h1>正在生成你的手相指南</h1>
-      <p>服务器完成后会自动打开报告页。当前正在：{{ currentStep.title }}</p>
+      <p class="eyebrow">掌心解读正在准备</p>
+      <h1>正在整理你的专属报告</h1>
+      <p>请稍等片刻，报告准备好后会自动打开。当前正在：{{ currentStep.title }}</p>
 
       <div class="analysis-visual" aria-hidden="true">
         <div class="scan-frame">
@@ -168,7 +168,7 @@ function stepNumber(index) {
   <section v-else-if="reading.status === 'failed'" class="state-page">
     <div class="state-card">
       <h1>生成失败</h1>
-      <p>{{ reading.errorMessage || 'AI 分析暂时不可用，请稍后重试。' }}</p>
+      <p>本次解读暂时没有生成成功，请重新上传一张更清晰的掌心照，或稍后再试。</p>
       <RouterLink to="/" class="secondary-btn">重新上传</RouterLink>
     </div>
   </section>

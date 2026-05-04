@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 ReadingStatus = Literal["processing", "succeeded", "failed"]
@@ -12,6 +12,14 @@ class HandInfo(BaseModel):
     handType: str = Field(..., description="手型判断")
     element: str = Field(..., description="元素倾向")
     typeLabel: str = Field(..., description="整体类型标签")
+
+    @field_validator("handSide")
+    @classmethod
+    def normalize_hand_side(cls, value: str) -> str:
+        normalized = value.strip()
+        if normalized in {"左手", "右手", "无法判断"}:
+            return normalized
+        return "无法判断"
 
 
 class Trait(BaseModel):
@@ -50,7 +58,7 @@ class PalmReadingResult(BaseModel):
     majorLines: list[MajorLine] = Field(min_length=4, max_length=4)
     aspects: list[Aspect] = Field(min_length=3, max_length=3)
     guidingEnergy: str
-    illustration: Illustration
+    illustration: Illustration | None = None
     disclaimer: str
 
 

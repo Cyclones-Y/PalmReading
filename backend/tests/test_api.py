@@ -4,7 +4,9 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from app.config import Settings
-from app.main import create_app, get_storage
+from app.main import create_app, get_analysis_service, get_storage
+from app.providers import MockPalmAnalysisProvider
+from app.services import PalmAnalysisService
 from app.storage import LocalStorage
 
 
@@ -12,6 +14,7 @@ def make_client(tmp_path: Path) -> tuple[TestClient, LocalStorage]:
     app = create_app()
     storage = LocalStorage(Settings(data_dir=tmp_path))
     app.dependency_overrides[get_storage] = lambda: storage
+    app.dependency_overrides[get_analysis_service] = lambda: PalmAnalysisService(MockPalmAnalysisProvider())
     return TestClient(app), storage
 
 

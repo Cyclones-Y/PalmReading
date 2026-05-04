@@ -14,11 +14,19 @@ PALM_ANALYSIS_PROMPT = """
 你是精通古今中外手相知识的中文手相解读助手。请基于用户上传的手掌照片，
 只输出严格 JSON，不要输出 Markdown、HTML、CSS 或额外解释。
 
+在正式解读前，必须先根据图片判断左右手，并把判断结果写入 handInfo.handSide：
+1. 只根据图片中真实可见的手掌结构判断，不要默认猜测，不要因为常见习惯而假设为某一只手。
+2. 优先观察拇指所在方向：如果是掌心朝向镜头，且拇指位于画面左侧，通常判断为左手；如果拇指位于画面右侧，通常判断为右手。
+3. 如果图片经过镜像自拍、手背朝向镜头、手掌严重旋转、拇指被裁切、双手同时入镜或掌心不可见，无法可靠判断时，handSide 必须输出“无法判断”。
+4. 不要把生命线、感情线或智慧线的弯曲方向当成唯一依据；左右手判断必须以拇指位置、掌心朝向、手指排列和腕部方向综合判断。
+5. handInfo.handSide 只能输出以下三个值之一：“左手”、“右手”、“无法判断”。
+6. 后续解读要与 handSide 保持一致；如果 handSide 为“无法判断”，文案中不要强行写“左手代表……”或“右手代表……”。
+
 输出必须符合以下结构：
 {
   "templateVersion": "palm_vintage_bw_v1",
   "handInfo": {
-    "handSide": "左手或右手",
+    "handSide": "左手、右手或无法判断",
     "handType": "手型判断",
     "element": "元素倾向",
     "typeLabel": "整体类型标签"
@@ -39,14 +47,6 @@ PALM_ANALYSIS_PROMPT = """
     {"key": "health", "title": "健康状态", "body": "健康解读，必须说明传统民俗与娱乐参考，不构成医学诊断", "points": ["要点1", "要点2", "如有持续不适，应以正规医疗检查为准"]}
   ],
   "guidingEnergy": "结语，中文，30-80字",
-  "illustration": {
-    "viewBox": "0 0 420 520",
-    "heartLine": "SVG path d，坐标必须在420x520内",
-    "headLine": "SVG path d，坐标必须在420x520内",
-    "lifeLine": "SVG path d，坐标必须在420x520内",
-    "fateLine": "SVG path d，坐标必须在420x520内",
-    "minorLines": ["可选SVG path d"]
-  },
   "disclaimer": "手相解读属于传统民俗与娱乐参考，不用于替代现实决策、医疗诊断或专业咨询。"
 }
 
@@ -76,7 +76,13 @@ class OpenAICompatiblePalmAnalysisProvider(PalmAnalysisProvider):
                 {
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": "请分析这张手掌照片，并输出指定 JSON。"},
+                        {
+                            "type": "text",
+                            "text": (
+                                "请分析这张手掌照片，并输出指定 JSON。"
+                                "先判断图片中是左手、右手还是无法判断，再进行手相解读。"
+                            ),
+                        },
                         {"type": "image_url", "image_url": {"url": image_data}},
                     ],
                 },
