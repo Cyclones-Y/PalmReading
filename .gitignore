@@ -1,8 +1,3 @@
-# Environment and secrets
-.env
-.env.*
-!.env.example
-
 # Python / FastAPI
 __pycache__/
 *.py[cod]
@@ -19,6 +14,11 @@ env/
 
 # Backend runtime data
 backend/data/
+
+# Local environment secrets
+.env
+.env.local
+.env.*.local
 
 # Node / Vue / Vite
 node_modules/

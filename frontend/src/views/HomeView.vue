@@ -67,9 +67,10 @@ async function submit() {
     <section class="capture-panel" aria-labelledby="home-title">
       <div class="home-copy">
         <p class="eyebrow">你的掌心，自有答案的线索</p>
-        <h1 id="home-title">从掌心纹路，看见你的性格底色与行动节奏</h1>
+        <h1 id="home-title">从掌心纹路</h1>
+        <h1 id="home-title">看见你的性格底色</h1>
         <p class="home-lead">
-          上传一张清晰掌心照，系统会将主要掌纹、手型倾向与事业、情感、健康三个维度整理成一份中文解读。排版整洁，适合自己慢慢阅读，也方便分享给朋友。
+          请上传一张清晰掌心照，系统将会根据主要掌纹和手型对事业、感情、健康三个维度进行解读。仅供娱乐，非科学结论，结合实际理性观看，切勿盲信盲从。
         </p>
 
         <div class="home-proof" aria-label="解读内容">

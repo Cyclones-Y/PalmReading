@@ -40,7 +40,8 @@ const shareUrl = computed(() => {
   if (!token) {
     return ''
   }
-  return `${window.location.origin}/r/${token}`
+  const basePath = import.meta.env.BASE_URL.replace(/\/$/, '')
+  return `${window.location.origin}${basePath}/r/${token}`
 })
 
 const progressPercent = computed(() => {
